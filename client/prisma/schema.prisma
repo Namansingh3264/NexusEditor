@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  name String
+  password String
+  documents Document[]
+  permissions Document_Permissions[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Document {
+  id String @id @default(cuid())
+  title String
+  content String
+  yjs_state Bytes?
+  owner_id String
+  owner User @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  permissions Document_Permissions[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("documents")
+}
+
+enum Permission {
+  OWNER
+  EDITOR
+  VIEWER
+}
+
+model Document_Permissions {
+  id String @id @default(cuid())
+  document_id String
+  user_id String?
+  email String?
+  permission_level Permission
+  document Document @relation(fields: [document_id], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  granted_by String?
+  created_at DateTime @default(now())
+
+  @@unique([document_id, user_id])
+  @@unique([document_id, email])
+  @@map("document_permissions")
+}
