@@ -121,16 +121,6 @@ ysocketio.on('document-update', async (docName: string, ydoc: Y.Doc, update: Uin
 });
 
 
-setInterval(async () => {
-    const activeDocuments = ysocketio.documents
-    if (activeDocuments.size != 0) {
-        for (const [docName, ydoc] of activeDocuments) {
-            await saveDocumentState(docName, ydoc)
-        }
-    }
-    console.log(`Periodic save completed for ${activeDocuments.size} documents`)
-}, 12000)
-
 io.on('connection', (socket) => {
     const doc_id = socket.handshake.query.doc_id;
     const user_email = socket.handshake.auth?.email || 'Anonymous'

@@ -227,15 +227,6 @@ const Tiptap = () => {
   }, [editor, permission])
 
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (collaborationRef.current) {
-        saveCollaborativeDocument()
-      }
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [editor, title])
 
 
   useEffect(() => {
