@@ -55,7 +55,7 @@ const Tiptap = () => {
 
     const doc = new Y.Doc()
     const socketProvider = new SocketIOProvider(
-      'http://localhost:8080',
+      process.env.NEXT_PUBLIC_WEBSOCKET_URL || 'http://localhost:8080',
       doc_id,
       doc,
       {

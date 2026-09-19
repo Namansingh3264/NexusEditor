@@ -39,9 +39,11 @@ async function loadDocumentState(docId: string, ydoc: any) {
     }
 }
 
+const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
+
 const app = express()
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: clientUrl,
     credentials: true,
 }))
 
@@ -49,7 +51,7 @@ const httpServer = http.createServer(app)
 
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: clientUrl,
         methods: ["GET", "POST"],
         credentials: true,
     }
@@ -142,6 +144,7 @@ io.on('connection', (socket) => {
     })
 })
 
-httpServer.listen(8080, () => {
-    console.log(`WebSocket server is running at http://localhost:8080`);
+const port = process.env.PORT || 8080;
+httpServer.listen(port, () => {
+    console.log(`WebSocket server is running on port ${port}`);
 });
