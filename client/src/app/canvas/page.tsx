@@ -1,9 +1,9 @@
-import Tiptap from '../../components/Tiptap'
+import { redirect } from "next/navigation"
 
-export default async function Canvas() {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Tiptap />
-    </div>
-  );
+/**
+ * The editor now lives at /documents/[id] so that every document is addressed
+ * by its real id. This keeps older /canvas links working.
+ */
+export default function CanvasRedirect() {
+    redirect("/dashboard")
 }
