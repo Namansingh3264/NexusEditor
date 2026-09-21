@@ -1,26 +1,13 @@
-"use client"
+import { Logo } from "@/components/Logo"
+import UserMenu from "@/components/UserMenu"
 
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { signIn, signOut, useSession } from "next-auth/react"
-
-export default function AppBar() {
-    const session=useSession()
-    console.log(session);
-    
+export default function AppBar({ children }: { children?: React.ReactNode }) {
     return (
-        <header className="w-full h-16 px-4 flex items-center justify-between shadow-sm border-b bg-white">
-            <div className="text-lg font-semibold text-gray-700">
-                Docs
-            </div>
-            <div className="flex items-center gap-3">
-                <Avatar className="w-9 h-9">
-                    <AvatarImage src="/profile.png" alt="Profile" />
-                    <AvatarFallback>U</AvatarFallback>
-                </Avatar>
-                <Button variant="outline" size="sm" onClick={session.data?.user ? signOut : signIn}>
-                    {session.data?.user ? "Logout" : "SignIn"}
-                </Button>
+        <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/85 backdrop-blur-md">
+            <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
+                <Logo />
+                <div className="min-w-0 flex-1">{children}</div>
+                <UserMenu />
             </div>
         </header>
     )

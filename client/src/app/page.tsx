@@ -1,22 +1,15 @@
-"use client"
+import { redirect } from "next/navigation"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/authOptions"
 
-import { useSession } from "next-auth/react";
-import "./globals.css";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+export const dynamic = "force-dynamic"
 
+/**
+ * Resolved on the server. The previous client-side version rendered `null` and
+ * redirected from an effect, so every visitor saw a blank white page first.
+ */
+export default async function Home() {
+  const session = await getServerSession(authOptions)
 
-export default function Home() {
-   const session = useSession()
-   const router = useRouter()
-   
-   useEffect(() => {
-      if (session.status === "authenticated") {
-         router.replace('/canvas')
-      } else if (session.status === "unauthenticated") {
-         router.replace('/signin')
-      }
-   }, [session.status, router])
-
-   return null
+  redirect(session?.user ? "/dashboard" : "/signin")
 }
